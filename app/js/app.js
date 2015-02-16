@@ -229,6 +229,7 @@ var App = {
           this.handles.slice(idx + 2);
       }
 
+
       if (!this.handles.length) {
         this.handles = 'me';
       }
@@ -256,11 +257,15 @@ var App = {
         this.$container.append($btn);
       }
 
+      var $txt = $('<input type="text" class="btn statusButton" maxlength="140" placeholder="your tweet here..."/>');
+      this.$statusButtons.push($txt);
+      this.$container.append($txt);
+
       this.$statusButtons[0].addClass('active');
     },
 
     show: function() {
-      App.$dlgTitle.text('Select your Tweet');
+      App.$dlgTitle.text('Select your Tweet, yo');
       this.$body.show();
       App.$btnNext.text('Tweet!');
 
@@ -270,6 +275,7 @@ var App = {
         var text = this.statuses[i].replace('{handles}', handles);
         this.$statusButtons[i].text(text).data('val', text);
       }
+      this.$statusButtons[this.statuses.length].val(handles);
     },
 
     hide: function() {
@@ -307,6 +313,9 @@ var App = {
     reset: function() {
     },
 
+    getTweetText: function() {
+      return $('.statusButton.active').text() || $('.statusButton.active').val();
+    },
     show: function() {
       App.$btnBack.hide();
       App.$btnNext.hide();
@@ -315,7 +324,7 @@ var App = {
       this.$body.show();
 
       var that = this;
-      var status = $('.statusButton.active').data('val');
+      var status = this.getTweetText();
 
       this.$tweet.css('background', 'url(' + App.snapshot.canvas.toDataURL() +
         ')');
